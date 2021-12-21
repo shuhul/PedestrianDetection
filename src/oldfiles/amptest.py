@@ -6,11 +6,11 @@ import math
 from src.oldfiles.ImageHandler import *
 import numpy as np
 
-
-from qiskit.aqua.algorithms import AmplitudeEstimation
-from qiskit import *
-
-ampQ = QuantumRegister(1)
-circuit = QuantumCircuit(ampQ)
-
-AmplitudeEstimation(num_eval_qubits=7, objective_qubits = [0])
+#
+# from qiskit.aqua.algorithms import AmplitudeEstimation
+# from qiskit import *
+#
+# ampQ = QuantumRegister(1)
+# circuit = QuantumCircuit(ampQ)
+#
+# AmplitudeEstimation(num_eval_qubits=7, objective_qubits = [0])
