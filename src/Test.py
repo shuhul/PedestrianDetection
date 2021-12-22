@@ -4,6 +4,6 @@ import matplotlib.pyplot as plt
 
 img = cv2.imread('../data/PennFudan/PedMasks/FudanPed00001_mask.png', 0)
 
-print(img[300][250])
+print(img.shape)
 plt.imshow(img)
 plt.show()
