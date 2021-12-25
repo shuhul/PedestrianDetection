@@ -8,7 +8,7 @@ from src import *
 import numpy as np
 
 
-def GLCM(img):
+def getFeatures(img):
     numQuantize = 8
     width = img.shape[0]
     height = img.shape[1]
@@ -48,12 +48,18 @@ def GLCM(img):
                 con += pval*pow((i-j),2)
                 cor += pval*(i-mu)*(j-mu)/var
                 ene += pow(pval,2)
-                ent += -math.log(pval)*pval
+                if(pval != 0):
+                    ent += -math.log(pval)*pval
         contrasts.append(con)
         correlations.append(cor)
         energys.append(ene)
         entropys.append(ent)
-    return [contrasts, correlations, energys, entropys]
+    rawFeatures = [contrasts, correlations, energys, entropys]
+    features = [np.mean(rawFeatures[0]), np.var(rawFeatures[0]),
+                np.mean(rawFeatures[1]), np.var(rawFeatures[1]),
+                np.mean(rawFeatures[2]), np.var(rawFeatures[2]),
+                np.mean(rawFeatures[3]), np.var(rawFeatures[3])]
+    return features
 def quantize(img, num):
     for i in range (img.shape[0]):
         for j in range (img.shape[1]):
@@ -86,7 +92,16 @@ def calcVariance(mat):
             out += mat[i][j]*pow((i-mu),2)
     return out
 
-out = GLCM(getImgsGS()[0][0])
-print(out)
 
+
+def getFeaturesFromData(data):
+    X = []
+    y = []
+    for d in data:
+        y.append(d[1])
+        img = d[0]
+        features = getFeatures(img)
+        X.append(features)
+
+    return list(zip(X,y))
 
