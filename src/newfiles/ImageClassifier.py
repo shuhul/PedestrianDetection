@@ -6,6 +6,9 @@ from sklearn.metrics import accuracy_score
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
 
+# TODO
+# Try with daimler mono data
+# Also try with just identifying yes or no if there are pedestrians
 
 train_data, test_data = DataHandler.getDataFromSaved('PennFudan', maxFiles=100, train_test_split=0.8)
 X, y = DataHandler.unzip(train_data)
@@ -41,6 +44,6 @@ classifier.fit(X, y)
 
 yp = classifier.predict(Xt)
 
-print(accuracy_score(yt, yp))
+print(f'Accuracy: {accuracy_score(yt, yp)*100}%')
 # print(classification_report(yt, yp))
 # print(confusion_matrix(yt, yp))
