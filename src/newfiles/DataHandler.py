@@ -1,8 +1,6 @@
 import os
 import cv2
 import ast
-import matplotlib.pyplot as plt
-from src.oldfiles import GLCM
 
 ROOT_DIR = os.path.abspath(os.curdir)
 
@@ -97,7 +95,7 @@ def saveData(data):
         saveText(f'data{i}', lines)
 
 
-def getDataFromSaved(name, maxFiles=1000):
+def getDataFromSaved(name, maxFiles=1000, train_test_split = 0.6):
     os.chdir(f'../../data/Training/{name}/Data')
     features = []
     outputs = []
@@ -111,7 +109,10 @@ def getDataFromSaved(name, maxFiles=1000):
             break
 
     os.chdir(f'../../')
-    return list(zip(features, outputs))
+    num_train = int(count*train_test_split)
+    train_data = list(zip(features[:num_train], outputs[:num_train]))
+    test_data = list(zip(features[num_train:], outputs[num_train:]))
+    return (train_data, test_data)
 
 def unzip(data):
     X = [d for d,o in data]
