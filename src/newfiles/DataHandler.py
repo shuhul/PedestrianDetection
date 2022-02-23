@@ -1,6 +1,8 @@
 import os
 import cv2
 import ast
+import src.newfiles.GLCM as GLCM
+import numpy as np
 
 ROOT_DIR = os.path.abspath(os.curdir)
 
@@ -31,7 +33,7 @@ def fixData():
 
         # with open(f'img{i}.txt', 'w') as f:
         #     f.write(f'Number of people: {anots[i]}')
-    # os.chdir('../../data/Training/DaimlerMono/Annotation')
+    # os.chdir('../../data/Training/PennFudan/Annotation')
     # for i in range(201):
     #     with open(f'img{i}', 'w') as f:
     #         n = 1
@@ -43,6 +45,34 @@ def fixData():
     # print(imgs[0].shape)
     # plt.imshow(imgs[0])
     # plt.show()
+    #
+    os.chdir('../../data/Training/PennFudan/AnnotationOld')
+    oldAnnots = []
+    for i in range(170):
+        with open(f'img{i}.txt', 'r') as f:
+            oldAnnots.append(int(f.read()[-2:]))
+    # print(oldAnnots)
+    numCorrect = 0
+    numTrials = 1000
+    numTotal = 170*numTrials
+    for i in range(numTrials):
+        for o in oldAnnots:
+            guess = int((np.random.random()*6)+1)
+            if guess == o:
+                numCorrect+=1
+
+    acc = round(numCorrect/numTotal*100,3)
+    print(f'Accuracy: {acc}%')
+    # newAnnots = []
+    # os.chdir('../../../../data/Training/PennFudan/Annotation')
+    # for i in range(170):
+    #     with open(f'img{i}', 'w') as f:
+    #         n = oldAnnots[i]
+    #         if n > 2:
+    #             n = 2
+    #         newAnnots.append(n)
+    #         f.write(f'Number of people: {n}')
+    # print(newAnnots)
     pass
 
 def getTrainingData(name, grayscale=False, maxFiles=1000):
@@ -119,7 +149,13 @@ def unzip(data):
     y = [o for d,o in data]
     return (X,y)
 
-# data = getDataFromSaved('PennFudan')
-# data = getTrainingData('PennFudan',grayscale=True,maxFiles=1000)
-# data = GLCM.getFeaturesFromData(data)
-# saveData(data)
+def createDataFeatures(name):
+    data = getTrainingData(name, grayscale=True, maxFiles=200)
+    data = GLCM.getFeaturesFromData(data)
+    saveData(data)
+
+
+# createDataFeatures('PennFudan')
+
+
+fixData()
